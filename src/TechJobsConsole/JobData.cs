@@ -20,6 +20,26 @@ namespace TechJobsConsole
          * Returns a list of all values contained in a given column,
          * without duplicates. 
          */
+        public static List<Dictionary<string, string>> FindByValue(string value)
+        {
+            LoadData();
+
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+
+            foreach (Dictionary<string, string> job in AllJobs)
+            {
+                foreach (KeyValuePair<string, string> pair in job)
+                {
+                    string newvalue = pair.Value.ToString().ToLower();
+                    if (newvalue.Contains(value.ToString().ToLower()))
+                    {
+                        jobs.Add(job);
+                    }
+
+                }
+            }
+            return jobs;
+        }
         public static List<string> FindAll(string column)
         {
             LoadData();
@@ -28,9 +48,9 @@ namespace TechJobsConsole
 
             foreach (Dictionary<string, string> job in AllJobs)
             {
-                string aValue = job[column];
+                string aValue = job[column].ToString().ToLower();
 
-                if (!values.Contains(aValue))
+                if (!values.Contains(aValue.ToString().ToLower()))
                 {
                     values.Add(aValue);
                 }
@@ -43,18 +63,13 @@ namespace TechJobsConsole
             // load data, if not already loaded
             LoadData();
 
-            string lowerColumn = column.ToLower();
-            string lowerValue = column.ToLower();
-
             List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
 
             foreach (Dictionary<string, string> row in AllJobs)
             {
-                string aValue = row[column];
+                string aValue = row[column].ToLower();
 
-                string aValueLower = aValue.ToLower();
-
-                if (aValue.Contains(value))
+                if (aValue.Contains(value.ToLower()))
                 {
                     jobs.Add(row);
                 }
@@ -62,29 +77,6 @@ namespace TechJobsConsole
 
             return jobs;
         }
-
-
-        public static List<Dictionary<string, string>> FindByValue(string column, string value)
-        {
-            // load data, if not already loaded
-            LoadData();
-
-            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
-            foreach (Dictionary<string, string> row in AllJobs)
-            {
-                string aValue = row[column];
-
-                if (aValue.Contains(value))
-                {
-                    jobs.Add(row);
-                }
-            }
-
-            return jobs;
-
-        }
-
-
 
         /*
          * Load and parse data from job_data.csv
@@ -166,6 +158,10 @@ namespace TechJobsConsole
 
             return rowValues.ToArray();
         }
-
     }
 }
+
+
+
+
+
